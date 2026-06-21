@@ -1,0 +1,13 @@
+dist/
+node_modules/
+vendor/
+.gh_token
+*.min.*
+var
+/.vscode/
+/.idea/
+
+# Secrets / local env (never commit real credentials)
+.env
+.env.*
+!.env.example

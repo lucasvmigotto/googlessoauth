@@ -1,0 +1,58 @@
+// -------------------------------------------------------------------------
+// googlessoauth plugin for GLPI
+// -------------------------------------------------------------------------
+// Hides the standard GLPI credentials form on the login page so that only the
+// injected "Login with Google" button remains.
+//
+// Break-glass: when the URL contains `?noAUTO=1`, gate.js adds the
+// `googlesso-break-glass` class to <html> *before paint*, which disables the
+// hiding below and restores the standard local-login form for emergency admin
+// access.
+// -------------------------------------------------------------------------
+
+// The login form lives in a single <form> with two columns:
+//   .col-md-5  -> username / password / submit (the standard credentials form)
+//   .col-auto  -> the right "panel" where our Google button is injected
+//
+// We hide the credentials column by default and keep the button column.
+html:not(.googlesso-break-glass) {
+    form[action$="login.php"] {
+        .col-md-5 {
+            display: none !important;
+        }
+
+        // The injected button column should fill the available width nicely
+        // once it is the only visible element.
+        .col-auto {
+            flex: 1 1 auto;
+            max-width: 420px;
+            margin-inline: auto;
+        }
+    }
+}
+
+// Styling for the injected button. Applies in all cases.
+.googlesso-wrapper {
+    min-height: 100%;
+}
+
+.googlesso-btn {
+    width: 100%;
+    font-weight: 600;
+    background-color: #fff;
+
+    &__icon {
+        display: inline-flex;
+        line-height: 0;
+    }
+
+    &.is-loading {
+        pointer-events: none;
+        opacity: 0.7;
+    }
+}
+
+// When the form is shown via break-glass, present a small hint.
+html.googlesso-break-glass .googlesso-wrapper::before {
+    content: "";
+}

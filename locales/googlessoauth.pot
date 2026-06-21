@@ -1,0 +1,79 @@
+#
+# googlessoauth plugin for GLPI - translation template
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: googlessoauth 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Google SSO Authentication"
+msgstr ""
+
+msgid "Login with Google"
+msgstr ""
+
+msgid "Google SSO is not configured yet."
+msgstr ""
+
+msgid "Google OAuth Client ID and Secret are not configured."
+msgstr ""
+
+msgid "Register the following redirect URI in your Google Cloud OAuth 2.0 Client:"
+msgstr ""
+
+msgid "Client ID"
+msgstr ""
+
+msgid "Client Secret"
+msgstr ""
+
+msgid "Allowed domains"
+msgstr ""
+
+msgid "Currently provided by the GOOGLE_CLIENT_ID environment variable."
+msgstr ""
+
+msgid "Currently provided by the GOOGLE_CLIENT_SECRET environment variable."
+msgstr ""
+
+msgid "A secret is already stored. Leave blank to keep it unchanged."
+msgstr ""
+
+msgid "No secret stored yet."
+msgstr ""
+
+msgid "Comma-separated list of Google Workspace domains allowed to authenticate. Leave empty to allow any domain (the GLPI user match still applies)."
+msgstr ""
+
+msgid "Google SSO configuration updated."
+msgstr ""
+
+msgid "Google authentication was cancelled or failed."
+msgstr ""
+
+msgid "Invalid authentication state. Please try again."
+msgstr ""
+
+msgid "Missing authorization code from Google."
+msgstr ""
+
+msgid "Could not complete authentication with Google."
+msgstr ""
+
+msgid "Your Google email address is not verified."
+msgstr ""
+
+msgid "Your email domain is not allowed to sign in."
+msgstr ""
+
+#, php-format
+msgid "No active GLPI account matches %s. Access denied."
+msgstr ""
+
+msgid "Your account is not authorized to connect to GLPI."
+msgstr ""
