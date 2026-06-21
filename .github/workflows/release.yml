@@ -1,13 +1,106 @@
-name: "Publish release"
+name: "Build and release"
 
 on:
   push:
-    tags:
-       - '*'
+    branches:
+      - "main"
+
+permissions:
+  contents: "write"
 
 jobs:
-  publish-release:
-    permissions:
-      contents: "write"
-    name: "Publish release"
-    uses: "glpi-project/plugin-release-workflows/.github/workflows/publish-release.yml@v1"
+  build-and-release:
+    name: "Build plugin and create GitHub Release"
+    runs-on: "ubuntu-24.04"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "Extract plugin version from setup.php"
+        id: "version"
+        run: |
+          VERSION=$(grep -oP "PLUGIN_GOOGLESSOAUTH_VERSION', '\K[^']+" setup.php)
+          if [ -z "$VERSION" ]; then
+            echo "::error::Could not extract version from setup.php"
+            exit 1
+          fi
+          echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
+          echo "Plugin version: ${VERSION}"
+
+      - name: "Setup PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "8.3"
+          extensions: "mbstring, curl, intl"
+          tools: "composer"
+
+      - name: "Install backend dependencies"
+        run: |
+          composer install \
+            --no-dev \
+            --no-interaction \
+            --no-scripts \
+            --optimize-autoloader
+
+      - name: "Setup Bun"
+        uses: "oven-sh/setup-bun@v2"
+
+      - name: "Install and build frontend assets"
+        run: |
+          bun install --frozen-lockfile
+          bun run build
+
+      - name: "Package plugin tarball"
+        id: "package"
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          ARCHIVE="googlessoauth-${VERSION}.tar.gz"
+
+          TMPDIR="$(mktemp -d)"
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.gitignore' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='.devcontainer' \
+            --exclude='tests' \
+            --exclude='tools' \
+            --exclude='phpstan.neon' \
+            --exclude='phpunit.xml' \
+            --exclude='psalm.xml' \
+            --exclude='.php-cs-fixer.php' \
+            --exclude='eslint.config.mjs' \
+            --exclude='.stylelintrc.js' \
+            --exclude='.twig_cs.dist.php' \
+            --exclude='rector.php' \
+            --exclude='Makefile' \
+            --exclude='scripts' \
+            --exclude='package.json' \
+            --exclude='bun.lock' \
+            --exclude='tsconfig.json' \
+            --exclude='docker-compose.yml' \
+            --exclude='Dockerfile' \
+            --exclude='.dockerignore' \
+            . "${TMPDIR}/"
+          tar -czf "${ARCHIVE}" -C "${TMPDIR}" .
+          rm -rf "${TMPDIR}"
+
+          CHECKSUM=$(sha256sum "${ARCHIVE}" | awk '{print $1}')
+          echo "checksum=${CHECKSUM}" >> "${GITHUB_OUTPUT}"
+          echo "archive=${ARCHIVE}" >> "${GITHUB_OUTPUT}"
+
+          echo "### Build artifact" >> "${GITHUB_STEP_SUMMARY}"
+          echo "\`${ARCHIVE}\` — SHA256: \`${CHECKSUM}\`" >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: "Create GitHub Release"
+        uses: "softprops/action-gh-release@v2"
+        with:
+          tag_name: "v${{ steps.version.outputs.version }}"
+          name: "googlessoauth v${{ steps.version.outputs.version }}"
+          body: |
+            **SHA256**: `${{ steps.package.outputs.checksum }}`
+          files: "${{ steps.package.outputs.archive }}"
+          generate_release_notes: true
