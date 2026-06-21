@@ -1,0 +1,19 @@
+{
+    "name": "googlessoauth",
+    "version": "0.1.0",
+    "description": "Google SSO authentication plugin for GLPI 11",
+    "license": "MIT",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "bun run scripts/build.ts",
+        "watch": "bun run scripts/build.ts --watch",
+        "lint": "eslint public/js && stylelint \"public/css/**/*.scss\"",
+        "lint:fix": "eslint --fix public/js && stylelint --fix \"public/css/**/*.scss\""
+    },
+    "devDependencies": {
+        "@types/bun": "^1.1.0",
+        "sass": "^1.77.0",
+        "typescript": "^5.4.0"
+    }
+}
