@@ -1,0 +1,32 @@
+{
+    "name": "googlessoauth (GLPI 11 plugin)",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/var/www/glpi/plugins/googlessoauth",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "lts"
+        }
+    },
+    "forwardPorts": [8088],
+    "postCreateCommand": "bash .devcontainer/post-create.sh",
+    "remoteUser": "vscode",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "xdebug.php-debug",
+                "esbenp.prettier-vscode",
+                "dbaeumer.vscode-eslint",
+                "stylelint.vscode-stylelint",
+                "oven.bun-vscode",
+                "mblode.twig-language-2"
+            ],
+            "settings": {
+                "php.validate.executablePath": "/usr/local/bin/php",
+                "intelephense.environment.phpVersion": "8.3.0",
+                "files.eol": "\n"
+            }
+        }
+    }
+}
