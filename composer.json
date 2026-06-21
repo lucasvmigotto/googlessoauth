@@ -1,0 +1,28 @@
+{
+    "name": "glpi-plugins/googlessoauth",
+    "description": "Google SSO authentication plugin for GLPI 11",
+    "type": "glpi-plugin",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.2",
+        "league/oauth2-client": "^2.7",
+        "league/oauth2-google": "^4.0"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "8.2.99"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "GlpiPlugin\\Googlessoauth\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GlpiPlugin\\Googlessoauth\\Tests\\": "tests/"
+        }
+    }
+}
