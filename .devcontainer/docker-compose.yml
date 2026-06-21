@@ -1,0 +1,38 @@
+name: googlessoauth-dev
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # Mount the plugin repository directly at its final location inside the
+      # GLPI tree. post-create.sh provisions GLPI around it into the named
+      # volume so that `../../` references resolve.
+      - ../:/var/www/glpi/plugins/googlessoauth:cached
+      - glpi_src:/var/www/glpi
+    environment:
+      GLPI_VERSION: "11.0.x"
+      GLPI_DB_HOST: db
+      GLPI_DB_PORT: "3306"
+      GLPI_DB_NAME: glpi
+      GLPI_DB_USER: glpi
+      GLPI_DB_PASSWORD: glpi
+    command: sleep infinity
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: glpi
+      MYSQL_USER: glpi
+      MYSQL_PASSWORD: glpi
+
+volumes:
+  glpi_src:
+  db_data:
