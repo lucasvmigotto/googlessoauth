@@ -6,7 +6,7 @@
     "require": {
         "php": ">=8.2",
         "league/oauth2-client": "^2.7",
-        "league/oauth2-google": "^4.0"
+        "league/oauth2-google": "^5.0"
     },
     "config": {
         "optimize-autoloader": true,
