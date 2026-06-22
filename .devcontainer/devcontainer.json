@@ -1,18 +1,31 @@
 {
-    "name": "googlessoauth (GLPI 11 plugin)",
-    "dockerComposeFile": "docker-compose.yml",
-    "service": "app",
-    "workspaceFolder": "/var/www/glpi/plugins/googlessoauth",
-    "features": {
-        "ghcr.io/devcontainers/features/node:1": {
-            "version": "lts"
+    "name": "googlessoauth",
+    "image": "mcr.microsoft.com/devcontainers/php:8.5-trixie",
+    "runArgs": ["--env-file", ".env"],
+    "mounts": [
+        {
+            "source": "googlessoauth-devcontainer-extensions",
+            "target": "/root/.vscode-server/extensions",
+            "type": "volume"
         }
-    },
-    "forwardPorts": [8088],
-    "postCreateCommand": "bash .devcontainer/post-create.sh",
+    ],
     "remoteUser": "vscode",
+    "features": {
+        "ghcr.io/devcontainers-extra/features/composer:1": {},
+        "ghcr.io/devcontainers-extra/features/bun:1": {}
+    },
+    "postCreateCommand": {
+        "bun": "bun install --frozen-lockfile",
+        "composer": "composer install"
+    },
     "customizations": {
         "vscode": {
+            "settings": {
+                "editor.formatOnSave": true,
+                "php.validate.executablePath": "/usr/local/bin/php",
+                "intelephense.environment.phpVersion": "8.3.0",
+                "files.eol": "\n"
+            },
             "extensions": [
                 "bmewburn.vscode-intelephense-client",
                 "xdebug.php-debug",
@@ -20,13 +33,19 @@
                 "dbaeumer.vscode-eslint",
                 "stylelint.vscode-stylelint",
                 "oven.bun-vscode",
-                "mblode.twig-language-2"
-            ],
-            "settings": {
-                "php.validate.executablePath": "/usr/local/bin/php",
-                "intelephense.environment.phpVersion": "8.3.0",
-                "files.eol": "\n"
-            }
+                "mblode.twig-language-2",
+                "docker.docker",
+                "ms-azuretools.vscode-docker",
+                "mguellsegarra.highlight-on-copy",
+                "mikestead.dotenv",
+                "streetsidesoftware.code-spell-checker-portuguese-brazilian",
+                "EditorConfig.EditorConfig",
+                "Cardinal90.multi-cursor-case-preserve",
+                "mohsen1.prettify-json",
+                "njzy.stats-bar",
+                "redhat.vscode-yaml",
+                "mhutchie.git-graph"
+            ]
         }
     }
 }
