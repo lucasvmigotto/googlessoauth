@@ -1,0 +1,14 @@
+{
+  "features": {
+    "ghcr.io/devcontainers-extra/features/bun:1": {
+      "version": "1.1.0",
+      "resolved": "ghcr.io/devcontainers-extra/features/bun@sha256:0624284ecaead9dd4c6654616a7f939cfa4ebcbc60593700a74e35b1767befa5",
+      "integrity": "sha256:0624284ecaead9dd4c6654616a7f939cfa4ebcbc60593700a74e35b1767befa5"
+    },
+    "ghcr.io/devcontainers-extra/features/composer:1": {
+      "version": "1.0.1",
+      "resolved": "ghcr.io/devcontainers-extra/features/composer@sha256:92bd9a7d6b294cdf231e7c4c36897da20e09e65d580db516d768c8b309496a76",
+      "integrity": "sha256:92bd9a7d6b294cdf231e7c4c36897da20e09e65d580db516d768c8b309496a76"
+    }
+  }
+}
