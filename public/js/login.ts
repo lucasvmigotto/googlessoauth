@@ -14,6 +14,7 @@
  */
 
 function enhanceButton(): void {
+    document.querySelector("div.col-md-5:has(div > input#login_name)")?.remove() 
     const button = document.querySelector<HTMLAnchorElement>('[data-googlesso-btn]');
     if (button === null) {
         return;
