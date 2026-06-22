@@ -35,7 +35,11 @@ use Glpi\Plugin\Hooks;
 use GlpiPlugin\Googlessoauth\Hook;
 
 /** @phpstan-ignore theCodingMachineSafe.function (safe to assume this isn't already defined) */
+define('PLUGIN_GOOGLESSOAUTH_NAME', 'Google SSO Authentication');
 define('PLUGIN_GOOGLESSOAUTH_VERSION', '0.1.0');
+define('PLUGIN_GOOGLESSOAUTH_AUTHOR', '<a href="https://github.com/lucasvmigotto">Lucas</a>');
+define('PLUGIN_GOOGLESSOAUTH_LICENSE', 'GLP-3.0');
+define('PLUGIN_GOOGLESSOAUTH_HOMEPAGE', 'https://github.com/lucasvmigotto/googlessoauth');
 
 // Load the plugin's own Composer dependencies (league/oauth2-client, ...).
 // GLPI registers a PSR-4 autoloader for the plugin `src/` directory but does
@@ -112,11 +116,11 @@ function plugin_init_googlessoauth(): void
 function plugin_version_googlessoauth(): array
 {
     return [
-        'name'           => 'Google SSO Authentication',
+        'name'           => PLUGIN_GOOGLESSOAUTH_NAME,
         'version'        => PLUGIN_GOOGLESSOAUTH_VERSION,
-        'author'         => '<a href="http://www.teclib.com">Teclib\'</a>',
-        'license'        => 'MIT',
-        'homepage'       => 'https://github.com/pluginsGLPI/googlessoauth',
+        'author'         => PLUGIN_GOOGLESSOAUTH_AUTHOR,
+        'license'        => PLUGIN_GOOGLESSOAUTH_LICENSE,
+        'homepage'       => PLUGIN_GOOGLESSOAUTH_HOMEPAGE,
         'requirements'   => [
             'glpi' => [
                 'min' => PLUGIN_GOOGLESSOAUTH_MIN_GLPI_VERSION,
