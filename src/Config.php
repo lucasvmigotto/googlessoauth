@@ -199,10 +199,20 @@ final class Config
 
     /**
      * The OAuth2 redirect (callback) URI registered with Google.
+     *
+     * Must be an ABSOLUTE url (scheme + host), because Google rejects relative
+     * redirect URIs and matches it exactly against the registered one. We build
+     * it from GLPI's configured base url (`$CFG_GLPI['url_base']`, which already
+     * includes any root_doc sub-path) rather than `Html::getPrefixedUrl()`,
+     * which only returns a host-relative path.
      */
     public static function getRedirectUri(): string
     {
-        return Html::getPrefixedUrl('/plugins/googlessoauth/front/callback.php');
+        /** @var array<string, mixed> $CFG_GLPI */
+        global $CFG_GLPI;
+
+        $base = rtrim((string) ($CFG_GLPI['url_base'] ?? ''), '/');
+        return $base . '/plugins/googlessoauth/front/callback.php';
     }
 
     /**
