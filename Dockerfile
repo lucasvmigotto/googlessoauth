@@ -1,46 +1,34 @@
 # syntax=docker/dockerfile:1
 
+ARG CURL_VERSION="8.20.0"
 ARG GLPI_VERSION=11
+ARG BUN_VERSION="1-debian13-dev"
+ARG COMPOSER_VERSION="2-debian13-php8.4-dev"
 
-FROM alpine/curl:8.20.0 AS curl
+FROM alpine/curl:${CURL_VERSION}  AS curl
 
-ARG FORMCREATOR_VERSION="3.0.1"
-ARG FIELDS_VERSION="1.24.0"
 ARG ADVANCEDFORMS_VERSION="1.1.1"
+ARG FIELDS_VERSION="1.24.0"
 ARG GANTT_VERSION="1.3.3"
-ARG DATAINJECTION_VERSION="2.15.7"
-ARG BEHAVIORS_VERSION="3.0.7"
-ARG METADEMANDS_VERSION="3.5.13"
 ARG REPORTS_VERSION="2.0.4"
 
 WORKDIR /app
 
-RUN curl -fsSLo "/tmp/glpi-formcreator-${FORMCREATOR_VERSION}.tar.bz2" \
-        "https://github.com/pluginsGLPI/formcreator/releases/download/${FORMCREATOR_VERSION}/glpi-formcreator-${FORMCREATOR_VERSION}.tar.bz2" \
-    && tar -xjvf "/tmp/glpi-formcreator-${FORMCREATOR_VERSION}.tar.bz2" \
-    && curl -fsSLo "/tmp/glpi-fields-${FIELDS_VERSION}.tar.bz2" \
-        "https://github.com/pluginsGLPI/fields/releases/download/${FIELDS_VERSION}/glpi-fields-${FIELDS_VERSION}.tar.bz2" \
-    && tar -xjvf "/tmp/glpi-fields-${FIELDS_VERSION}.tar.bz2" \
-    && curl -fsSLo "/tmp/glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
-        "https://github.com/pluginsGLPI/advancedforms/releases/download/${ADVANCEDFORMS_VERSION}/glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
-    && tar -xjvf "/tmp/glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
-    && curl -fsSLo "/tmp/glpi-gantt-${GANTT_VERSION}.tar.bz2" \
-        "https://github.com/pluginsGLPI/gantt/releases/download/${GANTT_VERSION}/glpi-gantt-${GANTT_VERSION}.tar.bz2" \
-    && tar -xjvf "/tmp/glpi-gantt-${GANTT_VERSION}.tar.bz2" \
-    && curl -fsSLo "/tmp/glpi-datainjection-${DATAINJECTION_VERSION}.tar.bz2" \
-        "https://github.com/pluginsGLPI/datainjection/releases/download/${DATAINJECTION_VERSION}/glpi-datainjection-${DATAINJECTION_VERSION}.tar.bz2" \
-    && tar -xjvf "/tmp/glpi-datainjection-${DATAINJECTION_VERSION}.tar.bz2" \
-    && curl -fsSLo "/tmp/glpi-behaviors-${BEHAVIORS_VERSION}.tar.bz2" \
-        "https://github.com/InfotelGLPI/behaviors/releases/download/${BEHAVIORS_VERSION}/glpi-behaviors-${BEHAVIORS_VERSION}.tar.bz2" \
-    && tar -xjvf "/tmp/glpi-behaviors-${BEHAVIORS_VERSION}.tar.bz2" \
-    && curl -fsSLo "/tmp/glpi-metademands-${METADEMANDS_VERSION}.tar.bz2" \
-        "https://github.com/InfotelGLPI/metademands/releases/download/${METADEMANDS_VERSION}/glpi-metademands-${METADEMANDS_VERSION}.tar.bz2" \
-    && tar -xjvf "/tmp/glpi-metademands-${METADEMANDS_VERSION}.tar.bz2" \
-    && curl -fsSLo "/tmp/glpi-reports-${REPORTS_VERSION}.tar.bz2" \
-        "https://github.com/InfotelGLPI/reports/releases/download/${REPORTS_VERSION}/glpi-reports-${REPORTS_VERSION}.tar.bz2" \
-    && tar -xjvf "/tmp/glpi-reports-${REPORTS_VERSION}.tar.bz2"
+RUN curl -fsSLo "glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
+    "https://github.com/pluginsGLPI/advancedforms/releases/download/${ADVANCEDFORMS_VERSION}/glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
+    && tar -xjvf "glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
+    && curl -fsSLo "glpi-fields-${FIELDS_VERSION}.tar.bz2" \
+    "https://github.com/pluginsGLPI/fields/releases/download/${FIELDS_VERSION}/glpi-fields-${FIELDS_VERSION}.tar.bz2" \
+    && tar -xjvf "glpi-fields-${FIELDS_VERSION}.tar.bz2" \
+    && curl -fsSLo "glpi-gantt-${GANTT_VERSION}.tar.bz2" \
+    "https://github.com/pluginsGLPI/gantt/releases/download/${GANTT_VERSION}/glpi-gantt-${GANTT_VERSION}.tar.bz2" \
+    && tar -xjvf "glpi-gantt-${GANTT_VERSION}.tar.bz2" \
+    && curl -fsSLo "glpi-reports-${REPORTS_VERSION}.tar.bz2" \
+    "https://github.com/InfotelGLPI/reports/releases/download/${REPORTS_VERSION}/glpi-reports-${REPORTS_VERSION}.tar.bz2" \
+    && tar -xjvf "glpi-reports-${REPORTS_VERSION}.tar.bz2" \
+    && rm -f "*.tar.bz2"
 
-FROM oven/bun:1 AS frontend
+FROM dhi.io/bun:${BUN_VERSION} AS frontend
 
 WORKDIR /src
 
@@ -53,17 +41,17 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     bun install --frozen-lockfile \
     && bun run build
 
-FROM composer:2 AS backend
+FROM dhi.io/composer:${COMPOSER_VERSION} AS backend
 
 WORKDIR /app
 
 RUN --mount=type=bind,source=composer.json,target=composer.json \
     --mount=type=bind,source=composer.lock,target=composer.lock \
     composer install \
-        --no-dev \
-        --no-interaction \
-        --no-scripts \
-        --optimize-autoloader
+    --no-dev \
+    --no-interaction \
+    --no-scripts \
+    --optimize-autoloader
 
 FROM glpi/glpi:${GLPI_VERSION}
 

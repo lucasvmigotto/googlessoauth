@@ -1,26 +1,32 @@
-name: glpi
-
 services:
+  
   glpi:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      no_cache: true
+    # -- Testing --
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    #   no_cache: true
+    image: glpi/glpi:11
     env_file: .env
-    depends_on:
-      - db
+    volumes:
+    - .:/var/www/glpi/plugins/googlessoauth
     ports:
       - "8080:80"
 
   db:
-    image: mysql
+    image: mysql:8.4
     volumes:
       - db_data:/var/lib/mysql
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: ${GLPI_DB_NAME:-glpi}
       MYSQL_USER: ${GLPI_DB_USER:-glpi}
-      MYSQL_PASSWORD: ${GLPI_DB_PASSWORD:-rootroot}
+      MYSQL_PASSWORD: ${GLPI_DB_PASSWORD:-glpi}
 
 volumes:
   db_data:
+
+networks:
+  mysql:
+    external: true
+      

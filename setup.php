@@ -35,7 +35,11 @@ use Glpi\Plugin\Hooks;
 use GlpiPlugin\Googlessoauth\Hook;
 
 /** @phpstan-ignore theCodingMachineSafe.function (safe to assume this isn't already defined) */
-define('PLUGIN_GOOGLESSOAUTH_VERSION', '0.1.0');
+define('PLUGIN_GOOGLESSOAUTH_NAME', 'Google SSO Authentication');
+define('PLUGIN_GOOGLESSOAUTH_VERSION', '0.2.0');
+define('PLUGIN_GOOGLESSOAUTH_AUTHOR', 'Lucas');
+define('PLUGIN_GOOGLESSOAUTH_LICENSE', 'GPL-3.0');
+define('PLUGIN_GOOGLESSOAUTH_HOMEPAGE', 'https://github.com/lucasvmigotto/googlessoauth');
 
 // Load the plugin's own Composer dependencies (league/oauth2-client, ...).
 // GLPI registers a PSR-4 autoloader for the plugin `src/` directory but does
@@ -65,6 +69,24 @@ function plugin_init_googlessoauth(): void
     $PLUGIN_HOOKS['csrf_compliant']['googlessoauth'] = true;
 
     // -----------------------------------------------------------------
+    // Public (unauthenticated) OAuth endpoints.
+    //
+    // GLPI 11 protects plugin legacy scripts with STRATEGY_AUTHENTICATED by
+    // default. The OAuth start (`redirect.php`) and the Google callback
+    // (`callback.php`) are reached *before* the user is logged in, so without
+    // this they bounce back to the login page with "session expired" (error=3).
+    // STRATEGY_NO_CHECK still starts the PHP session (needed to store/validate
+    // the OAuth state) but does not require an authenticated user.
+    // -----------------------------------------------------------------
+    if (method_exists(\Glpi\Http\Firewall::class, 'addPluginStrategyForLegacyScripts')) {
+        \Glpi\Http\Firewall::addPluginStrategyForLegacyScripts(
+            'googlessoauth',
+            '#^/front/(redirect|callback)\.php#',
+            \Glpi\Http\Firewall::STRATEGY_NO_CHECK
+        );
+    }
+
+    // -----------------------------------------------------------------
     // Anonymous-page assets.
     //
     // The login page is rendered for *unauthenticated* visitors, so the
@@ -78,7 +100,7 @@ function plugin_init_googlessoauth(): void
 
     // Synchronous "gate" script. Rendered as a blocking <script src> in <head>,
     // it runs *before* the body is painted and reveals the standard form when
-    // the break-glass `?noAUTO=1` parameter is present (emergency local login).
+    // the break-glass `?hilfe=1` parameter is present (emergency local login).
     $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT_ANONYMOUS_PAGE]['googlessoauth'] = 'public/dist/gate.js';
 
     // Progressive-enhancement module (button loading state, etc.).
@@ -112,11 +134,11 @@ function plugin_init_googlessoauth(): void
 function plugin_version_googlessoauth(): array
 {
     return [
-        'name'           => 'Google SSO Authentication',
+        'name'           => PLUGIN_GOOGLESSOAUTH_NAME,
         'version'        => PLUGIN_GOOGLESSOAUTH_VERSION,
-        'author'         => '<a href="http://www.teclib.com">Teclib\'</a>',
-        'license'        => 'MIT',
-        'homepage'       => 'https://github.com/pluginsGLPI/googlessoauth',
+        'author'         => PLUGIN_GOOGLESSOAUTH_AUTHOR,
+        'license'        => PLUGIN_GOOGLESSOAUTH_LICENSE,
+        'homepage'       => PLUGIN_GOOGLESSOAUTH_HOMEPAGE,
         'requirements'   => [
             'glpi' => [
                 'min' => PLUGIN_GOOGLESSOAUTH_MIN_GLPI_VERSION,

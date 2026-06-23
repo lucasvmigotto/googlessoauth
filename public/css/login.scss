@@ -4,7 +4,7 @@
 // Hides the standard GLPI credentials form on the login page so that only the
 // injected "Login with Google" button remains.
 //
-// Break-glass: when the URL contains `?noAUTO=1`, gate.js adds the
+// Break-glass: when the URL contains `?hilfe=1`, gate.js adds the
 // `googlesso-break-glass` class to <html> *before paint*, which disables the
 // hiding below and restores the standard local-login form for emergency admin
 // access.
