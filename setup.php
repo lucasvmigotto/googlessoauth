@@ -36,9 +36,9 @@ use GlpiPlugin\Googlessoauth\Hook;
 
 /** @phpstan-ignore theCodingMachineSafe.function (safe to assume this isn't already defined) */
 define('PLUGIN_GOOGLESSOAUTH_NAME', 'Google SSO Authentication');
-define('PLUGIN_GOOGLESSOAUTH_VERSION', '0.1.0');
-define('PLUGIN_GOOGLESSOAUTH_AUTHOR', '<a href="https://github.com/lucasvmigotto">Lucas</a>');
-define('PLUGIN_GOOGLESSOAUTH_LICENSE', 'GLP-3.0');
+define('PLUGIN_GOOGLESSOAUTH_VERSION', '0.2.0');
+define('PLUGIN_GOOGLESSOAUTH_AUTHOR', 'Lucas');
+define('PLUGIN_GOOGLESSOAUTH_LICENSE', 'GPL-3.0');
 define('PLUGIN_GOOGLESSOAUTH_HOMEPAGE', 'https://github.com/lucasvmigotto/googlessoauth');
 
 // Load the plugin's own Composer dependencies (league/oauth2-client, ...).
@@ -100,7 +100,7 @@ function plugin_init_googlessoauth(): void
 
     // Synchronous "gate" script. Rendered as a blocking <script src> in <head>,
     // it runs *before* the body is painted and reveals the standard form when
-    // the break-glass `?noAUTO=1` parameter is present (emergency local login).
+    // the break-glass `?hilfe=1` parameter is present (emergency local login).
     $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT_ANONYMOUS_PAGE]['googlessoauth'] = 'public/dist/gate.js';
 
     // Progressive-enhancement module (button loading state, etc.).
