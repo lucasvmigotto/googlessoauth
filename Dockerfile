@@ -27,7 +27,7 @@ RUN curl -fsSLo "/tmp/glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
     "https://github.com/InfotelGLPI/reports/releases/download/${REPORTS_VERSION}/glpi-reports-${REPORTS_VERSION}.tar.bz2" \
     && tar -xjvf "/tmp/glpi-reports-${REPORTS_VERSION}.tar.bz2"
 
-FROM dhi.io/bun:${BUN_VERSION}-dev AS frontend
+FROM dhi.io/bun:${BUN_VERSION} AS frontend
 
 WORKDIR /src
 
