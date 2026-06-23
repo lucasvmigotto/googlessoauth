@@ -5,7 +5,7 @@
  * Synchronous "gate" script.
  *
  * Loaded as a classic, blocking <script src> in <head>, this runs *before* the
- * body is painted. When the break-glass `?noAUTO=1` query parameter is present,
+ * body is painted. When the break-glass `?hilfe=1` query parameter is present,
  * it tags the <html> element so the accompanying CSS stops hiding the standard
  * GLPI login form, allowing emergency local authentication.
  *
@@ -16,8 +16,8 @@
 (function gate(): void {
     try {
         const params = new URLSearchParams(window.location.search);
-        const noAuto = params.get('noAUTO');
-        if (noAuto !== null && noAuto !== '0' && noAuto.toLowerCase() !== 'false') {
+        const breakGlass = params.get('hilfe');
+        if (breakGlass !== null && breakGlass !== '0' && breakGlass.toLowerCase() !== 'false') {
             document.documentElement.classList.add('googlesso-break-glass');
         }
     } catch {
