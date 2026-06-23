@@ -10,7 +10,7 @@ existing, active GLPI user. Users are **never** auto-created.
   hooks (`display_login`, `add_css_anonymous_page`, `add_javascript_anonymous_page`,
   `add_javascript_module_anonymous_page`).
 - Standard username/password form is hidden by CSS.
-- **Break-glass**: append `?noAUTO=1` to the login URL to reveal the standard
+- **Break-glass**: append `?hilfe=1` to the login URL to reveal the standard
   local-login form for emergency admin access. A tiny head-blocking script
   toggles this before paint, so there is no flash of the hidden form.
 - **No automatic redirects** — the OAuth flow starts only on an explicit click.
@@ -33,11 +33,11 @@ existing, active GLPI user. Users are **never** auto-created.
 
 If the config screen fields are empty, the plugin reads:
 
-| Variable                  | Purpose                                   |
-| ------------------------- | ----------------------------------------- |
-| `GOOGLE_CLIENT_ID`        | OAuth client id                           |
-| `GOOGLE_CLIENT_SECRET`    | OAuth client secret                       |
-| `GOOGLE_ALLOWED_DOMAINS`  | Comma-separated allowed domains (optional)|
+| Variable                 | Purpose                                    |
+| ------------------------ | ------------------------------------------ |
+| `GOOGLE_CLIENT_ID`       | OAuth client id                            |
+| `GOOGLE_CLIENT_SECRET`   | OAuth client secret                        |
+| `GOOGLE_ALLOWED_DOMAINS` | Comma-separated allowed domains (optional) |
 
 ## Build
 
@@ -81,6 +81,6 @@ php bin/console serve --address=0.0.0.0 --port=8088
 
 ## Contributing
 
-* Open a ticket for each bug/feature so it can be discussed
-* Follow [development guidelines](http://glpi-developer-documentation.readthedocs.io/en/latest/plugins/index.html)
-* Work on a new branch on your own fork and open a PR
+- Open a ticket for each bug/feature so it can be discussed
+- Follow [development guidelines](http://glpi-developer-documentation.readthedocs.io/en/latest/plugins/index.html)
+- Work on a new branch on your own fork and open a PR
