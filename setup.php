@@ -69,6 +69,24 @@ function plugin_init_googlessoauth(): void
     $PLUGIN_HOOKS['csrf_compliant']['googlessoauth'] = true;
 
     // -----------------------------------------------------------------
+    // Public (unauthenticated) OAuth endpoints.
+    //
+    // GLPI 11 protects plugin legacy scripts with STRATEGY_AUTHENTICATED by
+    // default. The OAuth start (`redirect.php`) and the Google callback
+    // (`callback.php`) are reached *before* the user is logged in, so without
+    // this they bounce back to the login page with "session expired" (error=3).
+    // STRATEGY_NO_CHECK still starts the PHP session (needed to store/validate
+    // the OAuth state) but does not require an authenticated user.
+    // -----------------------------------------------------------------
+    if (method_exists(\Glpi\Http\Firewall::class, 'addPluginStrategyForLegacyScripts')) {
+        \Glpi\Http\Firewall::addPluginStrategyForLegacyScripts(
+            'googlessoauth',
+            '#^/front/(redirect|callback)\.php#',
+            \Glpi\Http\Firewall::STRATEGY_NO_CHECK
+        );
+    }
+
+    // -----------------------------------------------------------------
     // Anonymous-page assets.
     //
     // The login page is rendered for *unauthenticated* visitors, so the
