@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:1
 
-ARG CURL_VERSION="8-debian13-dev"
+ARG CURL_VERSION="8.20.0"
 ARG GLPI_VERSION=11
 ARG BUN_VERSION="1-debian13-dev"
 ARG COMPOSER_VERSION="2-debian13-php8.4-dev"
 
-FROM dhi.io/curl:${CURL_VERSION} AS curl
+FROM alpine/curl:${CURL_VERSION}  AS curl
 
 ARG ADVANCEDFORMS_VERSION="1.1.1"
 ARG FIELDS_VERSION="1.24.0"
@@ -14,18 +14,19 @@ ARG REPORTS_VERSION="2.0.4"
 
 WORKDIR /app
 
-RUN curl -fsSLo "/tmp/glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
+RUN curl -fsSLo "glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
     "https://github.com/pluginsGLPI/advancedforms/releases/download/${ADVANCEDFORMS_VERSION}/glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
-    && tar -xjvf "/tmp/glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
-    && curl -fsSLo "/tmp/glpi-fields-${FIELDS_VERSION}.tar.bz2" \
+    && tar -xjvf "glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
+    && curl -fsSLo "glpi-fields-${FIELDS_VERSION}.tar.bz2" \
     "https://github.com/pluginsGLPI/fields/releases/download/${FIELDS_VERSION}/glpi-fields-${FIELDS_VERSION}.tar.bz2" \
-    && tar -xjvf "/tmp/glpi-fields-${FIELDS_VERSION}.tar.bz2" \
-    && curl -fsSLo "/tmp/glpi-gantt-${GANTT_VERSION}.tar.bz2" \
+    && tar -xjvf "glpi-fields-${FIELDS_VERSION}.tar.bz2" \
+    && curl -fsSLo "glpi-gantt-${GANTT_VERSION}.tar.bz2" \
     "https://github.com/pluginsGLPI/gantt/releases/download/${GANTT_VERSION}/glpi-gantt-${GANTT_VERSION}.tar.bz2" \
-    && tar -xjvf "/tmp/glpi-gantt-${GANTT_VERSION}.tar.bz2" \
-    && curl -fsSLo "/tmp/glpi-reports-${REPORTS_VERSION}.tar.bz2" \
+    && tar -xjvf "glpi-gantt-${GANTT_VERSION}.tar.bz2" \
+    && curl -fsSLo "glpi-reports-${REPORTS_VERSION}.tar.bz2" \
     "https://github.com/InfotelGLPI/reports/releases/download/${REPORTS_VERSION}/glpi-reports-${REPORTS_VERSION}.tar.bz2" \
-    && tar -xjvf "/tmp/glpi-reports-${REPORTS_VERSION}.tar.bz2"
+    && tar -xjvf "glpi-reports-${REPORTS_VERSION}.tar.bz2" \
+    && rm -f "*.tar.bz2"
 
 FROM dhi.io/bun:${BUN_VERSION} AS frontend
 

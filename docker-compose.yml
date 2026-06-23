@@ -1,6 +1,11 @@
 services:
   
   glpi:
+    # -- Testing --
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    #   no_cache: true
     image: glpi/glpi:11
     env_file: .env
     volumes:
