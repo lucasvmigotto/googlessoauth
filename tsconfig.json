@@ -15,7 +15,8 @@
         "forceConsistentCasingInFileNames": true,
         "isolatedModules": true,
         "verbatimModuleSyntax": true,
-        "noEmit": true
+        "noEmit": true,
+        "removeComments": true
     },
     "include": ["public/js/**/*.ts", "scripts/**/*.ts"],
     "exclude": ["node_modules", "vendor", "public/dist"]

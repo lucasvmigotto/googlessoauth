@@ -14,6 +14,28 @@
  */
 
 function enhanceButton(): void {
+    // Break-glass: when gate.ts tagged <html> with `googlesso-break-glass`
+    // (via `?hilfe=1`), keep the standard credentials form so an admin can log
+    // in locally. Only remove it from the DOM in the normal SSO-only case.
+    //
+    // Use closest() rather than a `:has()` selector: `:has()` is not supported
+    // in every browser, and an unsupported selector passed to querySelector
+    // throws, which would abort this whole script.
+    //
+    // Pull <form> content and remove the empty tag
+    //
+    if (!document.documentElement.classList.contains('googlesso-break-glass')) {
+        document.querySelector<HTMLInputElement>('input#login_name')
+            ?.closest('.col-md-5')
+            ?.remove();
+        const child = document.querySelector<HTMLDivElement>("form > div");
+        const parent = child?.parentElement;
+        if (!child || !parent) throw new Error("Page rendered with errors");
+        parent.insertAdjacentHTML('beforebegin', child.innerHTML);
+        child.remove();
+        parent.remove();
+    }
+
     const button = document.querySelector<HTMLAnchorElement>('[data-googlesso-btn]');
     if (button === null) {
         return;

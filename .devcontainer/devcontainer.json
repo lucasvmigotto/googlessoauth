@@ -15,7 +15,7 @@
         "ghcr.io/devcontainers-extra/features/bun:1": {}
     },
     "postCreateCommand": {
-        "bun": "bun install --frozen-lockfile",
+        "bun": "bun install --frozen-lockfile && bun run build",
         "composer": "composer install"
     },
     "customizations": {
