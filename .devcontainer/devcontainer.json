@@ -44,7 +44,8 @@
                 "mohsen1.prettify-json",
                 "njzy.stats-bar",
                 "redhat.vscode-yaml",
-                "mhutchie.git-graph"
+                "mhutchie.git-graph",
+                "GitHub.vscode-github-actions"
             ]
         }
     }
