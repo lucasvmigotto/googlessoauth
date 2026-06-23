@@ -1,0 +1,79 @@
+#
+# googlessoauth plugin for GLPI - translation template
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: googlessoauth 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Google SSO Authentication"
+msgstr "Autenticação com Google SSO"
+
+msgid "Login with Google"
+msgstr "Login com Google"
+
+msgid "Google SSO is not configured yet."
+msgstr "Login com Google não está configurado ainda."
+
+msgid "Google OAuth Client ID and Secret are not configured."
+msgstr "Client ID e Secret para OAuth2 do Google não estão configurados."
+
+msgid "Register the following redirect URI in your Google Cloud OAuth 2.0 Client:"
+msgstr "Registre a seguinte URI no seu painel do Google OAuth2:"
+
+msgid "Client ID"
+msgstr "ID do Client"
+
+msgid "Client Secret"
+msgstr "Secret do Client"
+
+msgid "Allowed domains"
+msgstr "Domínios permitidos"
+
+msgid "Currently provided by the GOOGLE_CLIENT_ID environment variable."
+msgstr "Disponível pela variável de ambiente GOOGLE_CLIENT_ID."
+
+msgid "Currently provided by the GOOGLE_CLIENT_SECRET environment variable."
+msgstr "Disponível pela variável de ambiente GOOGLE_CLIENT_SECRET."
+
+msgid "A secret is already stored. Leave blank to keep it unchanged."
+msgstr "Um valor já está armazenado, deixe em branco para não alterá-lo."
+
+msgid "No secret stored yet."
+msgstr "Nenhum segredo armazenado ainda."
+
+msgid "Comma-separated list of Google Workspace domains allowed to authenticate. Leave empty to allow any domain (the GLPI user match still applies)."
+msgstr "Lista separada por vírgula (,) de domínios Google Workspace permitidos para autenticação. Deixe em branco para permitir qualquer domínio (o match para usuário GLPI ainda é aplicado)."
+
+msgid "Google SSO configuration updated."
+msgstr "Configuração Google SSO atualizada."
+
+msgid "Google authentication was cancelled or failed."
+msgstr "Autenticação Google foi cancelada ou falhou."
+
+msgid "Invalid authentication state. Please try again."
+msgstr "Estado de autenticação inválido. Por favor, tente novamente."
+
+msgid "Missing authorization code from Google."
+msgstr "Código de autorização do Google está faltando."
+
+msgid "Could not complete authentication with Google."
+msgstr "Não foi possível completar a autenticação com o Google."
+
+msgid "Your Google email address is not verified."
+msgstr "O seu email Google não é verificado."
+
+msgid "Your email domain is not allowed to sign in."
+msgstr "O seu domínio de email não é permitido."
+
+#, php-format
+msgid "No active GLPI account matches %s. Access denied."
+msgstr "Nenhuma conta GLPI ativa para %s. Acesso negado."
+
+msgid "Your account is not authorized to connect to GLPI."
+msgstr "Sua conta não está autorizada para conectar ao GLPI."
