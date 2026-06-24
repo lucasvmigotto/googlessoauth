@@ -1,32 +1,8 @@
 # syntax=docker/dockerfile:1
 
-ARG CURL_VERSION="8.20.0"
 ARG GLPI_VERSION=11
 ARG BUN_VERSION="1-debian13-dev"
 ARG COMPOSER_VERSION="2-debian13-php8.4-dev"
-
-FROM alpine/curl:${CURL_VERSION}  AS curl
-
-ARG ADVANCEDFORMS_VERSION="1.1.1"
-ARG FIELDS_VERSION="1.24.0"
-ARG GANTT_VERSION="1.3.3"
-ARG REPORTS_VERSION="2.0.4"
-
-WORKDIR /app
-
-RUN curl -fsSLo "glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
-    "https://github.com/pluginsGLPI/advancedforms/releases/download/${ADVANCEDFORMS_VERSION}/glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
-    && tar -xjvf "glpi-advancedforms-${ADVANCEDFORMS_VERSION}.tar.bz2" \
-    && curl -fsSLo "glpi-fields-${FIELDS_VERSION}.tar.bz2" \
-    "https://github.com/pluginsGLPI/fields/releases/download/${FIELDS_VERSION}/glpi-fields-${FIELDS_VERSION}.tar.bz2" \
-    && tar -xjvf "glpi-fields-${FIELDS_VERSION}.tar.bz2" \
-    && curl -fsSLo "glpi-gantt-${GANTT_VERSION}.tar.bz2" \
-    "https://github.com/pluginsGLPI/gantt/releases/download/${GANTT_VERSION}/glpi-gantt-${GANTT_VERSION}.tar.bz2" \
-    && tar -xjvf "glpi-gantt-${GANTT_VERSION}.tar.bz2" \
-    && curl -fsSLo "glpi-reports-${REPORTS_VERSION}.tar.bz2" \
-    "https://github.com/InfotelGLPI/reports/releases/download/${REPORTS_VERSION}/glpi-reports-${REPORTS_VERSION}.tar.bz2" \
-    && tar -xjvf "glpi-reports-${REPORTS_VERSION}.tar.bz2" \
-    && rm -f "*.tar.bz2"
 
 FROM dhi.io/bun:${BUN_VERSION} AS frontend
 
@@ -43,6 +19,10 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 FROM dhi.io/composer:${COMPOSER_VERSION} AS backend
 
+ARG COOKIE_SECURE="1"
+ARG COOKIE_HTTPONLY="1"
+ARG COOKIE_SAMESITE="Lax"
+
 WORKDIR /app
 
 RUN --mount=type=bind,source=composer.json,target=composer.json \
@@ -51,13 +31,19 @@ RUN --mount=type=bind,source=composer.json,target=composer.json \
     --no-dev \
     --no-interaction \
     --no-scripts \
-    --optimize-autoloader
+    --optimize-autoloader \
+    && cat <<EOF > local_define.php
+<?php
+    ini_set('session.cookie_secure', ${COOKIE_SECURE});
+    ini_set('session.cookie_httponly', ${COOKIE_HTTPONLY});
+    ini_set('session.cookie_samesite', '${COOKIE_SAMESITE}');
+    if (isset(\$_SERVER['HTTP_X_FORWARDED_PROTO']) && \$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+        \$_SERVER['HTTPS'] = 'on';
+        \$_SERVER['SERVER_PORT'] = 443;
+    }
+EOF
 
 FROM glpi/glpi:${GLPI_VERSION}
-
-COPY --from=curl \
-    --chown=www-data:www-data \
-    /app/ /var/www/glpi/plugins/
 
 COPY --chown=www-data:www-data \
     . /var/www/glpi/plugins/googlessoauth/
@@ -65,6 +51,10 @@ COPY --chown=www-data:www-data \
 COPY --from=backend \
     --chown=www-data:www-data \
     /app/vendor/ /var/www/glpi/plugins/googlessoauth/vendor/
+
+COPY --from=backend \
+    --chown=www-data:www-data \
+    /app/local_define.php /var/www/glpi/config/local_define.php
 
 COPY --from=frontend \
     --chown=www-data:www-data \

@@ -36,7 +36,7 @@ use GlpiPlugin\Googlessoauth\Hook;
 
 /** @phpstan-ignore theCodingMachineSafe.function (safe to assume this isn't already defined) */
 define('PLUGIN_GOOGLESSOAUTH_NAME', 'Google SSO Authentication');
-define('PLUGIN_GOOGLESSOAUTH_VERSION', '0.2.0');
+define('PLUGIN_GOOGLESSOAUTH_VERSION', '1.0.0');
 define('PLUGIN_GOOGLESSOAUTH_AUTHOR', 'Lucas');
 define('PLUGIN_GOOGLESSOAUTH_LICENSE', 'GPL-3.0');
 define('PLUGIN_GOOGLESSOAUTH_HOMEPAGE', 'https://github.com/lucasvmigotto/googlessoauth');

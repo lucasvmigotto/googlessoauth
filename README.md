@@ -28,6 +28,9 @@ existing, active GLPI user. Users are **never** auto-created.
 2. In GLPI: **Setup → Plugins → Google SSO Authentication** (the cog/config
    page) and enter the **Client ID**, **Client Secret** and optional
    **Allowed domains**.
+3. Mount, or write during Dockerfile build, the `<GLPI_ROOT>/config/local_define.php`
+   as the `local_define.php` example file. The `SameSite` cookie policy must
+   be defined as `Lax`.
 
 ### Environment-variable fallback
 
