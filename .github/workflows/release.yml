@@ -75,6 +75,8 @@ jobs:
             --exclude='local_define.php' \
             --exclude='eslint.config.mjs' \
             --exclude='.stylelintrc.js' \
+            --exclude='public/**/*.ts' \
+            --exclude='public/**/*.scss' \
             --exclude='.twig_cs.dist.php' \
             --exclude='rector.php' \
             --exclude='Makefile' \
