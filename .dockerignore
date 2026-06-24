@@ -31,3 +31,6 @@ rector.php
 eslint.config.mjs
 .stylelintrc.js
 .twig_cs.dist.php
+
+// Cookie SameSite must be defined as Lax
+local_define.php

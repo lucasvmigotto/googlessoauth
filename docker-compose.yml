@@ -6,10 +6,13 @@ services:
     #   context: .
     #   dockerfile: Dockerfile
     #   no_cache: true
+    #   args:
+    #     - COOKIE_SECURE=0
     image: glpi/glpi:11
     env_file: .env
     volumes:
     - .:/var/www/glpi/plugins/googlessoauth
+    - ./local_define.php:/var/www/glpi/config/local_define.php
     ports:
       - "8080:80"
 
@@ -28,5 +31,5 @@ volumes:
 
 networks:
   mysql:
-    external: true
+    driver: bridge
       
