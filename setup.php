@@ -54,7 +54,7 @@ define("PLUGIN_GOOGLESSOAUTH_MIN_GLPI_VERSION", "11.0.0");
 
 // Maximum GLPI version, exclusive
 /** @phpstan-ignore theCodingMachineSafe.function (safe to assume this isn't already defined) */
-define("PLUGIN_GOOGLESSOAUTH_MAX_GLPI_VERSION", "11.0.99");
+define("PLUGIN_GOOGLESSOAUTH_MAX_GLPI_VERSION", "12.0.99");
 
 /**
  * Init hooks of the plugin.
